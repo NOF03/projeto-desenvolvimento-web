@@ -1,29 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Logo from '../assets/images/Logo';
+import { useNavigate } from 'react-router-dom'
+
 
 
 export default function SplashScreen() {
-    
-    return (
 
-        <>
-            <div className=' container text-center justify-content-center align-items-center full '>
-                <h1 className='fragmerAnimation'>FRAGMER</h1>
-                <Logo height="500" />
-                <h1 className='gameAnimation'>GAME</h1>
-            </div>
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation("/login");
+    }, 6000); // Change to the number of milliseconds you want to delay the navigation for
+
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
+
+  return (
+
+    <>
+      <div className=' text-center justify-center items-center flex h-full'>
+        <h1 className='fragmerAnimation'>FRAGMER</h1>
+        <Logo height="500" />
+        <h1 className='gameAnimation'>GAME</h1>
+      </div>
 
 
 
-            <style>
-                {`
-    .full {
-      height: 100%;
-      display: flex;
-    }
-    .row {
-      
-    }
+      <style>
+        {`
     svg {
       animation-name: logo;
       animation-duration: 5s;
@@ -69,11 +75,11 @@ export default function SplashScreen() {
     }
     `}
 
-            </style>
-        </>
+      </style>
+    </>
 
 
-    );
+  );
 
 };
 

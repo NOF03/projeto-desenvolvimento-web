@@ -4,6 +4,7 @@ import Input from '../assets/components/Input';
 import Button from '../assets/components/Button';
 import { ReactComponent as Password } from '../assets/images/password.svg';
 import { ReactComponent as Username } from '../assets/images/username.svg';
+import { motion } from "framer-motion";
 
 const Login = () => {
   const [data, setData] = useState({});
@@ -29,32 +30,20 @@ export default function SplashScreen() {
   return (
 
     <>
-      <div className='text-center py-5 container '>
+      <motion.div className=' py-20 justify-center grid' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 2 }}>
         <Logo height="320" />
-        <form action="/action_page.php" className=' formContainer'>
+        <form action="/action_page.php" className='my-3'>
           <Input type='text' id="fname" placeholder='Username' image={<Username />} />
           <Input type='password' id="lname" placeholder='Password' image={<Password />} />
           <Button value='LOGIN' />
         </form>
-        <div className='flex-row justify-content-center d-flex gap-5'>
+        <div className='justify-between flex'>
           <a href='/signup'>Create Account</a>
           <a href='/recoverpassword'>Forgot Password?</a>
         </div>
 
 
-      </div>
-
-      <style>
-        {`
-
-          .formContainer {
-            margin-top: 2%;
-          }
-          
-
-    `}
-
-      </style>
+      </motion.div>
     </>
 
 
