@@ -6,7 +6,7 @@ import { ReactComponent as Password } from '../assets/images/password.svg';
 import { ReactComponent as Username } from '../assets/images/username.svg';
 import { motion } from "framer-motion";
 
-const Login = () => {
+const API = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Login = () => {
   )
 }
 
-export default function SplashScreen() {
+export default function Login() {
 
   return (
 

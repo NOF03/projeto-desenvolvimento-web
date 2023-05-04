@@ -1,11 +1,10 @@
 import React from "react";
-import Button from "./Button";
-import { ReactComponent as Entertainment } from '../images/categories/entertainment.svg'
-import { ReactComponent as Science } from '../images/categories/science.svg'
-import { ReactComponent as Geography } from '../images/categories/geography.svg'
-import { ReactComponent as ArtCulture } from '../images/categories/artculture.svg'
-import { ReactComponent as Music } from '../images/categories/music.svg'
-import { ReactComponent as Sports } from '../images/categories/sports.svg'
+import { ReactComponent as ArtCulture } from '../images/categories/artculture.svg';
+import { ReactComponent as Entertainment } from '../images/categories/entertainment.svg';
+import { ReactComponent as Geography } from '../images/categories/geography.svg';
+import { ReactComponent as Music } from '../images/categories/music.svg';
+import { ReactComponent as Science } from '../images/categories/science.svg';
+import { ReactComponent as Sports } from '../images/categories/sports.svg';
 
 export default function Input(props) {
 
@@ -43,11 +42,11 @@ export default function Input(props) {
                     {image}
                     <p className="text-blue-700 font-bold text-2xl">{props.size}/4</p>
                 </div>
-                <div className="text-center text-black font-extrabold text-xl">
+                <div className="text-center text-black font-extrabold text-2xl">
                     <p>Room Name</p>
                     <label>#130</label>
                 </div>
-                <button className="bg-white font-extrabold text-xl text-[#1B48E9] hover:opacity-90 rounded w-1/4 justify-self-center my-2 disabled:opacity-60" disabled >Join</button>
+                <button className="bg-white font-extrabold text-xl text-[#1B48E9] hover:opacity-90 rounded w-1/4 justify-self-center my-2 disabled:opacity-60" >Join</button>
 
 
             </div>
