@@ -8,6 +8,7 @@ import Rooms from './views/Rooms.jsx';
 import RoomGame from './views/RoomGame.jsx';
 import Category from './views/Category.jsx';
 import InGame from './views/InGame.jsx';
+import Final from './views/Final.jsx';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/roomgame" element={<RoomGame host={false}/>} />
         <Route path="/category" element={<Category />} />
         <Route path="/ingame" element={<InGame />} />
+        <Route path="/final" element={<Final />} />
       </Routes>
 
   );
