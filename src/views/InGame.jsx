@@ -29,14 +29,12 @@ function LeaveButton() {
 
 function OneQuestion(props) {
     return (
-        <button>
-            <div className='grid items-center text-center h-32 bg-white rounded-full'>
-                <span className=' pl-36 pr-4 text-xl md:text-4xl font-bold text-black'>{props.label}</span>
-                <div className='absolute flex bg-[#999999] h-40 w-40 items-center justify-center rounded-full text-6xl font-black text-black'>
-                    23
-                </div>
+        <div className='grid items-center text-center h-32 bg-white rounded-full'>
+            <span className=' pl-36 pr-4 text-xl md:text-4xl font-bold text-black'>{props.label}</span>
+            <div className='absolute flex bg-[#999999] h-40 w-40 items-center justify-center rounded-full text-6xl font-black text-black'>
+                23
             </div>
-        </button>
+        </div>
 
     )
 }
@@ -125,7 +123,7 @@ export default function InGame() {
         <>
             <LeaveButton />
             <LogoTop />
-            <Score />
+            <Game />
         </>
 
     );

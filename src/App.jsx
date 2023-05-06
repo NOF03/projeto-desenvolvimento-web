@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/recoverpassword" element={<RecoverPassword />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/roomgame" element={<RoomGame host={false}/>} />
+        <Route path="/roomgame" element={<RoomGame host={true}/>} />
         <Route path="/category" element={<Category />} />
         <Route path="/ingame" element={<InGame />} />
       </Routes>
