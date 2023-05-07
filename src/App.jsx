@@ -10,6 +10,7 @@ import RoomGame from "./views/RoomGame.jsx";
 import Category from "./views/Category.jsx";
 import InGame from "./views/InGame.jsx";
 import Final from "./views/Final.jsx";
+import Account from "./views/Account.jsx";
 
 export default function App() {
   return (
@@ -18,12 +19,27 @@ export default function App() {
       <Route path="/login" element={<LogIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/recoverpassword" element={<RecoverPassword />} />
+
+      {/* {window.localStorage.getItem("userID") 
+      ? <>
+        <Route path="/mainmenu" element={<MainMenu />} />
+        <Route path="/rooms" element={<Rooms />} />
+        <Route path="/roomgame" element={<RoomGame host={true} />} />
+        <Route path="/category" element={<Category />} />
+        <Route path="/ingame" element={<InGame />} />
+        <Route path="/final" element={<Final />} />
+        <Route path="/account" element={<Account />} />
+        </> 
+      : null  
+    } */}
       <Route path="/mainmenu" element={<MainMenu />} />
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/roomgame" element={<RoomGame host={true} />} />
       <Route path="/category" element={<Category />} />
       <Route path="/ingame" element={<InGame />} />
       <Route path="/final" element={<Final />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/*" element={<SplashScreen />} />
     </Routes>
   );
 }
