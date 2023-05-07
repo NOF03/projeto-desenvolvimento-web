@@ -7,7 +7,7 @@ const GetUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await UserModel.findOne({ username });
-
+    
     if (!user) {
       return res.json({ message: "User Doesn't Exist!" });
     }
@@ -22,6 +22,20 @@ const GetUser = async (req, res) => {
     res.json({ token, userID: user._id });
   } catch (err) {
     res.json(err);
+  }
+};
+
+const GetUserByID = async (req, res) => {
+  const id = window.localStorage.getItem("userID");
+  try {
+    const user = await UserModel.findById(id).exec();
+    if (user) {
+      console.log("User Found!");
+      return res.json({ user: user });
+    }
+
+  } catch (err) {
+    console.error(err);
   }
 };
 
@@ -52,4 +66,5 @@ const PostUser = async (req, res) => {
 module.exports = {
   GetUser,
   PostUser,
+  GetUserByID,
 };
