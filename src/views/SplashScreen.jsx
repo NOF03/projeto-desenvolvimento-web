@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
-import Logo from '../assets/images/Logo';
-import { useNavigate } from 'react-router-dom'
-
-
+import React, { useEffect } from "react";
+import Logo from "../assets/images/Logo";
+import { useNavigate } from "react-router-dom";
 
 export default function SplashScreen() {
-
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -16,17 +13,13 @@ export default function SplashScreen() {
     return () => clearTimeout(timer);
   }, [navigation]);
 
-
   return (
-
     <>
-      <div className=' text-center justify-center items-center flex h-full'>
-        <h1 className='fragmerAnimation'>FRAGMER</h1>
+      <div className=" text-center justify-center items-center flex h-full">
+        <h1 className="fragmerAnimation">FRAGMER</h1>
         <Logo height="500" />
-        <h1 className='gameAnimation'>GAME</h1>
+        <h1 className="gameAnimation">GAME</h1>
       </div>
-
-
 
       <style>
         {`
@@ -74,12 +67,7 @@ export default function SplashScreen() {
       to {transform: translate(12vw)}
     }
     `}
-
       </style>
     </>
-
-
   );
-
-};
-
+}
