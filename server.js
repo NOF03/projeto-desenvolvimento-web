@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const mongoose = require("mongoose");
 const PORT = 3001;
@@ -9,7 +10,11 @@ const PORT = 3001;
 let userRoute = require("./src/routes/userRoute");
 
 app.use(express.json()); //Transforma JSON para objecto!
-app.use(cors());
+app.use(cors({
+  origin : 'http://localhost:3000',
+  credentials: true,
+}));
+app.use(cookieParser());
 
 //Mongoose connection
 mongoose

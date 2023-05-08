@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { UserContextProvider } from "./UserContext";
 import SplashScreen from "./views/SplashScreen.jsx";
 import LogIn from "./views/Login.jsx";
 import SignUp from "./views/SignUp.jsx";
@@ -14,14 +15,12 @@ import Account from "./views/Account.jsx";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<SplashScreen />} />
-      <Route path="/login" element={<LogIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/recoverpassword" element={<RecoverPassword />} />
-
-      {/* {window.localStorage.getItem("userID") 
-      ? <>
+    <UserContextProvider>
+      <Routes>
+        <Route path="/" element={<SplashScreen />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/recoverpassword" element={<RecoverPassword />} />
         <Route path="/mainmenu" element={<MainMenu />} />
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/roomgame" element={<RoomGame host={true} />} />
@@ -29,17 +28,7 @@ export default function App() {
         <Route path="/ingame" element={<InGame />} />
         <Route path="/final" element={<Final />} />
         <Route path="/account" element={<Account />} />
-        </> 
-      : null  
-    } */}
-      <Route path="/mainmenu" element={<MainMenu />} />
-      <Route path="/rooms" element={<Rooms />} />
-      <Route path="/roomgame" element={<RoomGame host={true} />} />
-      <Route path="/category" element={<Category />} />
-      <Route path="/ingame" element={<InGame />} />
-      <Route path="/final" element={<Final />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/*" element={<SplashScreen />} />
-    </Routes>
+      </Routes>
+    </UserContextProvider>
   );
 }

@@ -1,70 +1,77 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
 const UserModel = require("../models/userModel");
 
 const GetUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await UserModel.findOne({ username });
-    
+
     if (!user) {
       return res.json({ message: "User Doesn't Exist!" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
 
     if (!isPasswordValid) {
-      return res.json({ message: "Username or Password Is Incorrect!" });
+      return res.status(422).json({ message: "Username or Password Is Incorrect!" });
     }
 
-    const token = jwt.sign({ id: user._id }, "secret");
-    res.json({ token, userID: user._id });
+    jwt.sign(
+      { email: user.email, id: user._id },
+      "secret",
+      {},
+      (err, token) => {
+        if (err) throw err;
+        console.log(token)
+        res.cookie('token', token).json(user);
+      }
+    );
   } catch (err) {
     res.json(err);
   }
 };
 
-const GetUserByID = async (req, res) => {
-  const id = window.localStorage.getItem("userID");
-  try {
-    const user = await UserModel.findById(id).exec();
-    if (user) {
-      console.log("User Found!");
-      return res.json({ user: user });
-    }
-
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 const PostUser = async (req, res) => {
+  const { username, password, email } = req.body;
   try {
-    const { username, password, email } = req.body;
-    const userEmail = await UserModel.findOne({ email });
-    const userName = await UserModel.findOne({ username });
-    if (userEmail || userName) {
-      return res.json({ message: "User already exists!" });
-    }
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new UserModel({
+    await UserModel.create({
       username,
       password: hashedPassword,
       email,
     });
-    await newUser.save();
 
     res.json({ message: "User Registered Successfuly!" });
   } catch (error) {
-    console.error(error);
+    res.status(422).json(error);
   }
 };
+
+const ShowUser = (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, "secret", {}, async (err, userData) => {
+      if (err) throw err;
+      const user = await UserModel.findById(userData.id);
+      console.log(user);
+      res.json(user);
+    });
+  } else {
+    res.json(null);
+  }
+};
+
+const LogoutUser = (req,res) => {
+  res.cookie('token', '').json(true);
+}
 
 module.exports = {
   GetUser,
   PostUser,
-  GetUserByID,
+  ShowUser,
+  LogoutUser
 };

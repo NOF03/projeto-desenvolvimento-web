@@ -1,13 +1,12 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Logo from "../assets/images/Logo";
-import Input from "../assets/components/Input";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../assets/components/Button";
+import Input from "../assets/components/Input";
+import Logo from "../assets/images/Logo";
 import { ReactComponent as Email } from "../assets/images/email.svg";
 import { ReactComponent as Password } from "../assets/images/password.svg";
 import { ReactComponent as Username } from "../assets/images/username.svg";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -22,12 +21,13 @@ export default function SignUp() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/auth/register", {
+      const response = await fetch(`http://localhost:3001/auth/register`, {
         method: "POST",
         body: JSON.stringify({ username, password, email }),
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
       });
       const result = await response.json();
       console.log(result);

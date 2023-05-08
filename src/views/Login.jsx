@@ -1,25 +1,21 @@
-import React, { useState } from "react";
-import Logo from "../assets/images/Logo";
-import Input from "../assets/components/Input";
+import { motion } from "framer-motion";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
 import Button from "../assets/components/Button";
+import Input from "../assets/components/Input";
+import Logo from "../assets/images/Logo";
 import { ReactComponent as Password } from "../assets/images/password.svg";
 import { ReactComponent as Username } from "../assets/images/username.svg";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import { render } from "react-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
-
+  const {setUser} = useContext(UserContext);
   const navigation = useNavigate();
 
-  const [_, setCookies] = useCookies(["access_token"]);
-  setCookies("access_token", "");
-  window.localStorage.removeItem("userID");
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -30,15 +26,10 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
       });
       const result = await response.json();
-      console.log(result);
-      if (!result.userID) {
-        setErrorMessage(result.message);
-        return;
-      }
-      setCookies("access_token", result.token);
-      window.localStorage.setItem("userID", result.userID);
+      setUser(result);
       navigation("/mainmenu");
     } catch (err) {
       console.log(err);
