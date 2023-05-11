@@ -1,8 +1,7 @@
-let mongoose = require("mongoose");
+const mongoose = require("mongoose");
+const passportLocalMongoose = require("passport-local-mongoose");
 
-let UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+var userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   gamesPlayed: { type: Number, default: 0 },
   totalScore: { type: Number, default: 0 },
@@ -11,6 +10,7 @@ let UserSchema = new mongoose.Schema({
   incorrectAnswers: { type: Number, default: 0 },
 });
 
-let UserModel = mongoose.model("users", UserSchema);
+userSchema.plugin(passportLocalMongoose); //Vai adicionar username e password
 
-module.exports = UserModel;
+module.exports = mongoose.model("User", userSchema);
+ 

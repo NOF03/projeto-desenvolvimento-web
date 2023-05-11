@@ -1,7 +1,7 @@
+import axios from "axios";
 import { motion } from "framer-motion";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
 import Button from "../assets/components/Button";
 import Input from "../assets/components/Input";
 import Logo from "../assets/images/Logo";
@@ -9,30 +9,26 @@ import { ReactComponent as Password } from "../assets/images/password.svg";
 import { ReactComponent as Username } from "../assets/images/username.svg";
 
 export default function Login() {
+  const apiURL = process.env.REACT_APP_BASE_API_URL;
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
-  const {setUser} = useContext(UserContext);
   const navigation = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
     try {
-      const response = await fetch("http://localhost:3001/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include',
+      
+      await axios.post(`${apiURL}/auth/login`, {
+        username,
+        password,
       });
-      const result = await response.json();
-      setUser(result);
       navigation("/mainmenu");
     } catch (err) {
-      console.log(err);
+      setErrorMessage("User doesn't exists!")
     }
   };
 

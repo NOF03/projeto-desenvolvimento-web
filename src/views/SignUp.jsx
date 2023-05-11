@@ -1,3 +1,4 @@
+import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,8 @@ import { ReactComponent as Password } from "../assets/images/password.svg";
 import { ReactComponent as Username } from "../assets/images/username.svg";
 
 export default function SignUp() {
+  const apiURL = process.env.REACT_APP_BASE_API_URL;
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -16,28 +19,18 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigation = useNavigate();
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      const response = await fetch(`http://localhost:3001/auth/register`, {
-        method: "POST",
-        body: JSON.stringify({ username, password, email }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include',
+      await axios.post(`${apiURL}/auth/register`, {
+        username,
+        password,
+        email,
       });
-      const result = await response.json();
-      console.log(result);
-      if (result.message === "User already exists!") {
-        setErrorMessage(result.message);
-        return;
-      }
       navigation("/login");
     } catch (err) {
-      console.log(err);
+      setErrorMessage("User already exists!");
     }
   };
 

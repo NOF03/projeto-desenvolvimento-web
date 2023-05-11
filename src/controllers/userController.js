@@ -1,77 +1,68 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-
-
-const UserModel = require("../models/userModel");
-
-const GetUser = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await UserModel.findOne({ username });
-
-    if (!user) {
-      return res.json({ message: "User Doesn't Exist!" });
-    }
-
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(422).json({ message: "Username or Password Is Incorrect!" });
-    }
-
-    jwt.sign(
-      { email: user.email, id: user._id },
-      "secret",
-      {},
-      (err, token) => {
-        if (err) throw err;
-        console.log(token)
-        res.cookie('token', token).json(user);
-      }
-    );
-  } catch (err) {
-    res.json(err);
-  }
-};
+const User = require("../models/userModel");
+const passport = require("passport");
 
 const PostUser = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { email, username, password } = req.body;
   try {
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const existingUserUsername = await User.findOne({ username });
+    const existingUserEmail = await User.findOne({ email });
+    if (existingUserUsername || existingUserEmail) {
+      return res.status(401).send({ message: "Username already taken" });
+    }
+    const user = new User({ email, username }); //cria um novo utilizador
 
-    await UserModel.create({
-      username,
-      password: hashedPassword,
-      email,
-    });
-
-    res.json({ message: "User Registered Successfuly!" });
-  } catch (error) {
-    res.status(422).json(error);
+    await User.register(user, password); //guarda os dados na BD.
+    res.json({ message: "User Authenticated!" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
 };
 
-const ShowUser = (req, res) => {
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, "secret", {}, async (err, userData) => {
-      if (err) throw err;
-      const user = await UserModel.findById(userData.id);
-      console.log(user);
-      res.json(user);
-    });
-  } else {
-    res.json(null);
+const GetUser = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res.status(401).json(err);
+    }
+    if (user) {
+      const tokenId = user.id;
+      return res.status(200).cookie("token", tokenId).json({ message: "Login Successful" });
+    } else {
+      res.status(401).json(info);
+    }
+  })(req, res, next);
+};
+
+const GetUserById = async (req, res) => {
+  let userID = req.cookies.token;
+  try {
+    const user = await User.findById(userID);
+    if (user) {
+      return res.status(200).json({ user: user });
+    } else {
+      return res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    res.status(401).json({ message: err.message });
   }
 };
 
-const LogoutUser = (req,res) => {
-  res.cookie('token', '').json(true);
-}
+const LogoutUser = (req, res) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.json({ message: "User Logged Out!" });
+    });
+  });
+};
 
 module.exports = {
-  GetUser,
   PostUser,
-  ShowUser,
-  LogoutUser
+  GetUser,
+  GetUserById,
+  LogoutUser,
 };

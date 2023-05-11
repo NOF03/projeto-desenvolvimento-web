@@ -10,7 +10,7 @@ export default function Input(props) {
           type={props.type}
           id={props.id}
           placeholder={props.placeholder}
-          className=" font-bold text-xl w-full py-2 px-3 my-4 text-white bg-transparent border-b-2 focus:outline-0 placeholder:text-white "
+          className=" font-bold text-xl w-full py-2 px-3 my-4 text-white bg-transparent border-b-2 focus:outline-0 placeholder:text-white ${...props}"
           required
         />
         <br />

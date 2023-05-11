@@ -1,39 +1,27 @@
-import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import LogoTop from "../assets/components/LogoTop";
-
-import { useNavigate, Navigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
 import { ReactComponent as Avatar5 } from "../assets/images/avatars/avatar5.svg";
 import { ReactComponent as Pencil } from "../assets/images/pencil.svg";
 
 export default function Account() {
-  const navigation = useNavigate();
-  const {user, ready, setUser} = useContext(UserContext);
-  const getUserById = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/auth/profile`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          
-        },
-        credentials: 'include',
-      });
-      const user = await response.json();
-      console.log(user);
-      setUser(user);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const apiURL = process.env.REACT_APP_BASE_API_URL;
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`${apiURL}/auth/profile`);
+        console.log(data);
+        setUser(data.user);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  if (!ready) {
-    return 'Loading...';
-  }
-
-  if (ready && !user) {
-    return <Navigate to={'/login'} />
-  }
+    // Call fetchData with an event object
+    const event = { preventDefault: () => {} };
+    fetchData(event);
+  }, []);
 
   return (
     <>
@@ -47,29 +35,21 @@ export default function Account() {
             </div>
             <div className="ml-20">
               <p className="text-[25px] mb-4 font-bold ">
-                Username: {user.user.username}
+                Username: {user.username}
               </p>
-              <p className="text-[25px] mt-4 font-bold ">
-                Email: {user.user.email}
-              </p>
+              <p className="text-[25px] mt-4 font-bold ">Email: {user.email}</p>
             </div>
           </div>
           <div className="grid justify-items-center text-center gap-28">
             <div className="grid grid-cols-2 gap-40 ">
-              <Section value={user.user.gamesPlayed} label="Games Played" />
-              <Section
-                value={user.user.accountCreatedDate}
-                label="Created Date"
-              />
+              <Section value={user.gamesPlayed} label="Games Played" />
+              <Section value={user.accountCreatedDate} label="Created Date" />
             </div>
             <div className="grid grid-cols-3 gap-48">
-              <Section value={user.user.totalScore} label="Total Score" />
+              <Section value={user.totalScore} label="Total Score" />
+              <Section value={user.correctAnswers} label="Correct Answers" />
               <Section
-                value={user.user.correctAnswers}
-                label="Correct Answers"
-              />
-              <Section
-                value={user.user.incorrectAnswers}
+                value={user.incorrectAnswers}
                 label="Incorrect Answers"
               />
             </div>

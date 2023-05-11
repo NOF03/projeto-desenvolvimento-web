@@ -1,12 +1,18 @@
-let router = require("express").Router();
-let userController = require("../controllers/userController.js");
+const router = require("express").Router();
 
-router.get("/profile", userController.ShowUser);
+let {
+  PostUser,
+  GetUser,
+  GetUserById,
+  LogoutUser,
+} = require("../controllers/userController.js");
 
-router.post("/register", userController.PostUser);
+router.get("/profile", GetUserById);
 
-router.post("/login", userController.GetUser);
+router.post("/register", PostUser);
 
-router.post("/logout", userController.LogoutUser);
+router.post("/login", GetUser);
+
+router.post("/logout", LogoutUser);
 
 module.exports = router;

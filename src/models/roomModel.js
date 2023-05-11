@@ -1,8 +1,10 @@
-let mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 let RoomSchema = new mongoose.Schema({
-  usersID: [ObjectId],
-  category: Number,
+  name: String,
+  usersID: [String],
+  host: String,
+  category: Number
 });
 
 let RoomModel = mongoose.model("rooms", RoomSchema);

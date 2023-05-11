@@ -1,35 +1,23 @@
-import React, { useContext } from "react";
+import axios from "axios";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
-import Logo from "../assets/images/Logo";
 import Button from "../assets/components/Button";
+import Logo from "../assets/images/Logo";
 import { ReactComponent as Profile } from "../assets/images/profile.svg";
 
 export default function MainMenu() {
+  const apiURL = process.env.REACT_APP_BASE_API_URL;
+
   const navigate = useNavigate();
-  const {setUser} = useContext(UserContext);
   async function logout() {
-    await fetch(
-      `http://localhost:3001/auth/logout`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include',
-      }
-    ); 
-    setUser(null);
-    navigate('/login');
+    await axios.post(`${apiURL}/auth/logout`);
+    navigate("/login");
   }
 
   return (
     <>
       <div className="fixed top-0 right-0 flex justify-between items-center p-4 gap-5">
-        <button
-          className="text-[20px] font-bold"
-          onClick={logout}
-        >
+        <button className="text-[20px] font-bold hover:text-red-600" onClick={logout}>
           LOG OUT
         </button>
         <button onClick={() => navigate(`/account`)}>
