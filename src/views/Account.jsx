@@ -8,9 +8,11 @@ export default function Account() {
   const apiURL = process.env.REACT_APP_BASE_API_URL;
   const [user, setUser] = useState(null);
   useEffect(() => {
+  
     const fetchData = async () => {
+      const userID = window.localStorage.getItem("user");
       try {
-        const { data } = await axios.get(`${apiURL}/auth/profile`);
+        const { data } = await axios.post(`${apiURL}/auth/profile`, {userID});
         console.log(data);
         setUser(data.user);
       } catch (err) {

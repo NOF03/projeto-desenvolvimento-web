@@ -7,7 +7,7 @@ let {
   LogoutUser,
 } = require("../controllers/userController.js");
 
-router.get("/profile", GetUserById);
+router.post("/profile", GetUserById);
 
 router.post("/register", PostUser);
 

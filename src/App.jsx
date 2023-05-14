@@ -13,7 +13,7 @@ import Final from "./views/Final.jsx";
 import Account from "./views/Account.jsx";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+
 
 export default function App() {
   return (
@@ -27,7 +27,7 @@ export default function App() {
       <Route path="/roomgame/:id" element={<RoomGame />} />
       <Route path="/category" element={<Category />} />
       <Route path="/ingame/:id" element={<InGame />} />
-      <Route path="/final" element={<Final />} />
+      <Route path="/final/:id" element={<Final />} />
       <Route path="/account" element={<Account />} />
     </Routes>
   );

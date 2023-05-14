@@ -8,9 +8,11 @@ var userSchema = new mongoose.Schema({
   accountCreatedDate: { type: Date, default: new Date() },
   correctAnswers: { type: Number, default: 0 },
   incorrectAnswers: { type: Number, default: 0 },
+  inGameCorrectAnswer:{ type: Boolean, default: false},
+  inGameScore : { type: Number, default: 0},
 });
 
 userSchema.plugin(passportLocalMongoose); //Vai adicionar username e password
-
-module.exports = mongoose.model("User", userSchema);
+const userModel = mongoose.model("User", userSchema)
+module.exports = {userSchema, userModel };
  

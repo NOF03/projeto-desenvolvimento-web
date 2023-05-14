@@ -22,10 +22,11 @@ export default function Login() {
     
     try {
       
-      await axios.post(`${apiURL}/auth/login`, {
+      const {data} = await axios.post(`${apiURL}/auth/login`, {
         username,
         password,
       });
+      window.localStorage.setItem("user", data.user._id);
       navigation("/mainmenu");
     } catch (err) {
       setErrorMessage("User doesn't exists!")

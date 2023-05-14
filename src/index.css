@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 * {
   font-family: 'Inter', sans-serif !important;
 }
@@ -36,17 +37,4 @@ html {
 h2 {
   font-size: 69px;
   font-weight: 600;
-}
-
-input[type=checkbox] {
-  display:none;
-}
-
-input#thing1[type=checkbox] + label
-{
-  background-image: url("http://lorempixel.com/50/50/");
-  height: 50px;
-  width: 50px;
-  display:inline-block;
-  padding: 0 0 0 0px;
 }

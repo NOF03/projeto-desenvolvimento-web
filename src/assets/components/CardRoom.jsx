@@ -42,12 +42,11 @@ export default function CardRoom(props) {
         <div className="flex justify-between ">
           {image}
           <p className="text-blue-700 font-bold text-2xl">
-            {props.item.usersID.length}/4
+            {props.item.users.length}/4
           </p>
         </div>
         <div className="text-center text-black font-extrabold text-2xl">
           <p>{props.item.name}</p>
-          <label>#{props.key}</label>
         </div>
         <button
           className="bg-white font-extrabold text-xl text-[#1B48E9] hover:opacity-90 rounded w-1/4 justify-self-center my-2 disabled:opacity-60"

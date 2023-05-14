@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../assets/components/Input";
@@ -30,7 +29,7 @@ export default function Category() {
   const handleCreateRoom = async (event, value) => {
     event.preventDefault();
     if (!roomName) return;
-    const userID = Cookies.get("token");
+    const userID = window.localStorage.getItem("user");
     socket.emit("create room", roomName, value, userID);
     socket.on("room list", (data) => {
       socket.emit("join room", data, userID);

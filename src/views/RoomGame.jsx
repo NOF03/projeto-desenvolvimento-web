@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import LogoTop from "../assets/components/LogoTop";
 import { ReactComponent as Loader } from "../assets/images/loader.svg";
-import Cookies from "js-cookie";
-import { useParams } from "react-router-dom";
 import socket from "../socket/socket";
 
 export default function RoomGame() {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.emit("get room", id);
@@ -28,7 +28,27 @@ export default function RoomGame() {
       socket.off("room details");
       socket.off("room error");
     };
-  });
+  }, [room]);
+
+  const handleSubmit = () => {
+    socket.emit("start game", id);
+    navigate(`/ingame/${id}`);
+  };
+
+  useEffect(() => {
+    socket.on("redirect", () => {
+      navigate(`/ingame/${id}`);
+    });
+  }, []);
+
+  const leaveSubmit = () => {
+    socket.emit(
+      "leave room",
+      id,
+      window.localStorage.getItem("user"),
+      navigate("/mainmenu")
+    );
+  };
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -44,8 +64,11 @@ export default function RoomGame() {
       <div className=" grid h-full ">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-0 my-auto">
           <div className=" grid text-center items-center justify-items-center gap-5">
-            {room && Cookies.get("token") == room.host ? (
-              <button className="bg-white font-extrabold text-xl text-[#1B48E9] hover:opacity-90 rounded w-1/3 h-16 justify-self-center my-3 disabled:opacity-60 ">
+            {room && window.localStorage.getItem("user") === room.host ? (
+              <button
+                className="bg-white font-extrabold text-xl text-[#1B48E9] hover:opacity-90 rounded w-1/3 h-16 justify-self-center my-3 disabled:opacity-60 "
+                onClick={handleSubmit}
+              >
                 START
               </button>
             ) : (
@@ -56,7 +79,7 @@ export default function RoomGame() {
                 <Loader className="animate-spin my-4" />
               </>
             )}
-            <button className="bg-white font-extrabold text-xl text-[#E91B1B] hover:opacity-90 rounded w-1/3 h-16 justify-self-center my-3 disabled:opacity-60">
+            <button className="bg-white font-extrabold text-xl text-[#E91B1B] hover:opacity-90 rounded w-1/3 h-16 justify-self-center my-3 disabled:opacity-60" onClick={leaveSubmit}>
               LEAVE ROOM
             </button>
           </div>
@@ -64,7 +87,7 @@ export default function RoomGame() {
             <p className="text-3xl font-bold">Players in the room:</p>
             <ul className="list-disc pl-5 space-y-3 py-7 text-2xl">
               {room &&
-                room.usersID.map((item, index) => <li>{item._id}</li>)}
+                room.users.map((item, index) => <li>{item.username}</li>)}
             </ul>
           </div>
         </div>

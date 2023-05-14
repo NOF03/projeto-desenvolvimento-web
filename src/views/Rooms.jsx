@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
+import CardRoom from "../assets/components/CardRoom";
 import LogoTop from "../assets/components/LogoTop";
 import socket from "../socket/socket";
-import CardRoom from "../assets/components/CardRoom";
-import Cookies from "js-cookie";
-import axios from "axios";
 
 export default function Rooms() {
   const [dataFromServer, setDataFromServer] = useState(null);
-  const apiURL = process.env.REACT_APP_BASE_API_URL;
 
-  useEffect(() => {
+  useEffect( () => {
     socket.on("room-list", (data) => {
       console.log("Received data from server:", data);
       setDataFromServer(data);
@@ -36,7 +33,7 @@ export default function Rooms() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-9">
           {dataFromServer &&
             dataFromServer.map((item, index) => (
-              <CardRoom key={index} item={item} user={Cookies.get("token")} />
+              <CardRoom item={item} user={window.localStorage.getItem("user")} />
             ))}
         </div>
       </div>

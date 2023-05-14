@@ -1,13 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LogoTop from "../assets/components/LogoTop";
+import { useNavigate, useParams } from "react-router-dom";
+import socket from "../socket/socket";
 
 export default function Final() {
+  const { id } = useParams();
+  const [room, setRoom] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    socket.emit("get room", id);
+
+    socket.on("room details", (room) => {
+      const sortedUsers = room.users.sort((a, b) => b.inGameScore - a.inGameScore);
+      // Update room state with sorted users array
+      setRoom({ ...room, users: sortedUsers });
+      setError(null);
+    });
+
+    socket.on("room error", (errorMessage) => {
+      setRoom(null);
+      setError(errorMessage);
+    });
+
+    // Cleanup function to remove the event listeners when the component unmounts
+    return () => {
+      socket.off("room details");
+      socket.off("room error");
+    };
+  });
+
+  const handleSubmit = () => {
+    socket.emit(
+      "leave room",
+      id,
+      window.localStorage.getItem("user"),
+      navigate("/mainmenu")
+    );
+  };
+
   return (
     <>
       <LogoTop />
-      <div className="fixed inset-0">
+      {room && <>
+        <div className="fixed inset-0">
         <div className="pt-20 pb-10 text-center">
-          <button className="bg-white font-extrabold text-[15px] md:text-[25px] text-[#1B48E9] hover:opacity-90 rounded w-1/5 h-16  my-3 disabled:opacity-60">
+          <button className="bg-white font-extrabold text-[15px] md:text-[25px] text-[#1B48E9] hover:opacity-90 rounded w-1/5 h-16  my-3 disabled:opacity-60" onClick={handleSubmit}>
             LEAVE
           </button>
         </div>
@@ -20,10 +59,10 @@ export default function Final() {
             </div>
             <div className="h-2/4 w-full text-white flex flex-col pt-16 items-center">
               <div className="text-[25px] font-bold text-center pt-8">
-                otorrinolaringologista77
+                {room.users[1] ? room.users[1].username : ""}
               </div>
               <div className="text-[35px] font-bold text-center">
-                3500 points
+                {room.users[1] ? room.users[1].inGameScore : ""} points
               </div>
             </div>
           </div>
@@ -35,10 +74,10 @@ export default function Final() {
             </div>
             <div className="h-2/4 w-full text-white flex flex-col pt-16 items-center">
               <div className="md:text-[30px] text-[15px] font-bold text-center pt-8">
-                starkirt09
+                {room.users[0].username}
               </div>
               <div className="md:text-[50px] text-[20px] font-bold text-center">
-                4500 points
+              {room.users[0].inGameScore} points
               </div>
             </div>
           </div>
@@ -50,15 +89,17 @@ export default function Final() {
             </div>
             <div className="h-2/4 w-full text-white flex flex-col pt-16 items-center">
               <div className="text-[25px] font-bold text-center pt-8">
-                hello_kitty69
+              {room.users[2] ? room.users[2].username : ""}
               </div>
               <div className="text-[35px] font-bold text-center">
-                2000 points
+              {room.users[2] ? room.users[2].inGameScore : ""} points
               </div>
             </div>
           </div>
         </div>
       </div>
+      </>}
+      
     </>
   );
 }
