@@ -25,7 +25,6 @@ const PORT = process.env.REACT_APP_PORT || 3001;
  * Aqui vamos fazemos referencias de todas as rotas
  */
 let userRoute = require("./src/routes/userRoute");
-let roomRoute = require("./src/routes/roomRoute");
 
 app.use(express.json()); //Transforma JSON para objecto!
 app.use(express.static(__dirname + "/src")); // é uma função middleware no framework Express.js para Node.js que serve arquivos estáticos, como imagens, arquivos CSS e JavaScript.
@@ -64,7 +63,6 @@ mongoose
 
 //Middleware que é executado sempre que fazemos, por exemplo, um get/post request.
 app.use("/auth", userRoute);
-app.use("/room", roomRoute);
 
 server.listen(PORT, () => {
   console.log(`Server running!`);
@@ -100,6 +98,14 @@ io.on("connection", async (socket) => {
       socket.emit("room error", "Failed to get room details");
     }
   });
+
+  socket.on("change avatar", async (userID, avatar) => {
+    const user = await userModel.findOne({_id:userID});
+
+    user.avatar = avatar;
+    await user.save();
+
+  })
 
   socket.on("create room", async (roomName, categ, userID) => {
     try {

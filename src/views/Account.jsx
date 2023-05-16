@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import LogoTop from "../assets/components/LogoTop";
 import { ReactComponent as Pencil } from "../assets/images/pencil.svg";
 import { ReactComponent as Escape } from "../assets/images/x.svg";
+import socket from '../socket/socket';
 
 export default function Account() {
   const apiURL = process.env.REACT_APP_BASE_API_URL;
@@ -39,6 +40,7 @@ export default function Account() {
 
   const selectAvatar = async (avatar) => {
     setSelectedAvatar(avatar);
+    socket.emit("change avatar", window.localStorage.getItem("user"), avatar)
     setChangeAvatar(false);
   };
 

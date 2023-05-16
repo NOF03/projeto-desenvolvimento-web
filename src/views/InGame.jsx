@@ -3,7 +3,6 @@ import he from "he";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LogoTop from "../assets/components/LogoTop";
-import { ReactComponent as Avatar1 } from "../assets/images/avatars/avatar1.svg";
 import { ReactComponent as Leave } from "../assets/images/leave.svg";
 import { ReactComponent as Correct } from "../assets/images/correct.svg";
 import { ReactComponent as Incorrect } from "../assets/images/incorrect.svg";
@@ -86,7 +85,7 @@ function Game(props) {
   const handleClick = () => {
     setIsDisabled(true);
   };
-
+  const letters = ["A", "B", "C", "D"]
   return (
     <>
       <div className="pt-20 pb-10 text-center">
@@ -100,7 +99,7 @@ function Game(props) {
             return (
               <OneAnswer
                 label={answer}
-                index={index + 1}
+                index={letters[index]}
                 disabled={isDisabled}
                 onClick={handleClick}
                 correctAnswer={props.question.correctAnswer}
@@ -145,7 +144,12 @@ function Score(props) {
         <div className="container m-auto ">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-9 ">
             {props.room.users.map((user) => {
-              return <CardScore image={<Avatar1 />} user={user} />;
+              return (
+                <CardScore
+                  image={<img src={user.avatar} className="w-64" />}
+                  user={user}
+                />
+              );
             })}
           </div>
         </div>
