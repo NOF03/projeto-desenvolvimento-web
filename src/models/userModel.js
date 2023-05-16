@@ -10,9 +10,9 @@ var userSchema = new mongoose.Schema({
   incorrectAnswers: { type: Number, default: 0 },
   inGameCorrectAnswer:{ type: Boolean, default: false},
   inGameScore : { type: Number, default: 0},
+  avatar : { type: String, default: "https://robohash.org/cbf891dd6214aa905f48c352967eda1e?set=set4&bgset=&size=400x400"}
 });
 
 userSchema.plugin(passportLocalMongoose); //Vai adicionar username e password
 const userModel = mongoose.model("User", userSchema)
 module.exports = {userSchema, userModel };
- 

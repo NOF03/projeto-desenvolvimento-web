@@ -5,15 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import LogoTop from "../assets/components/LogoTop";
 import { ReactComponent as Avatar1 } from "../assets/images/avatars/avatar1.svg";
 import { ReactComponent as Leave } from "../assets/images/leave.svg";
-/* 
-import { ReactComponent as Avatar2 } from '../assets/images/avatars/avatar2.svg'
-import { ReactComponent as Avatar3 } from '../assets/images/avatars/avatar3.svg'
-import { ReactComponent as Avatar4 } from '../assets/images/avatars/avatar4.svg'
-import { ReactComponent as Avatar5 } from '../assets/images/avatars/avatar5.svg'
-import { ReactComponent as Avatar6 } from '../assets/images/avatars/avatar6.svg'
-import { ReactComponent as Avatar7 } from '../assets/images/avatars/avatar7.svg'
-import { ReactComponent as Avatar8 } from '../assets/images/avatars/avatar8.svg'
-*/
 import { ReactComponent as Correct } from "../assets/images/correct.svg";
 import { ReactComponent as Incorrect } from "../assets/images/incorrect.svg";
 import socket from "../socket/socket";
