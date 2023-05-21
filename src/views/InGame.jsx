@@ -41,7 +41,6 @@ function OneAnswer(props) {
   const handleClick = () => {
     setIsSelected(true);
     if (props.label === props.correctAnswer) {
-      console.log("scoreAdded");
       socket.emit(
         "addScoreToUser",
         window.localStorage.getItem("user"),
@@ -136,7 +135,6 @@ function CardScore(props) {
 }
 
 function Score(props) {
-  console.log(props.room);
   return (
     <>
       <div className="py-24"></div>
@@ -175,7 +173,6 @@ export default function InGame() {
         `https://opentdb.com/api.php?amount=10&category=${id}&type=multiple`
       );
       const { results } = await response.data;
-      console.log(results);
       const formattedQuestions = results.map((question) => {
         const {
           correct_answer,

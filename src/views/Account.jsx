@@ -16,7 +16,6 @@ export default function Account() {
       const userID = window.localStorage.getItem("user");
       try {
         const { data } = await axios.post(`${apiURL}/auth/profile`, { userID });
-        console.log(data);
         setUser(data.user);
       } catch (err) {
         console.error(err);

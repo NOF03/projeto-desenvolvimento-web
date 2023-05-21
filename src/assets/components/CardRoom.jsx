@@ -11,7 +11,6 @@ import socket from "../../socket/socket";
 export default function CardRoom(props) {
   const navigate = useNavigate();
   let image;
-  console.log(props.item);
   switch (props.item.category) {
     case 2:
       image = <Entertainment height="72" preserveAspectRatio="xMinYMid meet" />;

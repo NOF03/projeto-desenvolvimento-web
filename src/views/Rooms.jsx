@@ -6,22 +6,18 @@ import socket from "../socket/socket";
 export default function Rooms() {
   const [dataFromServer, setDataFromServer] = useState(null);
 
-  useEffect( () => {
-    socket.on("room-list", (data) => {
-      console.log("Received data from server:", data);
-      setDataFromServer(data);
-      console.log(dataFromServer)
-    });
-
+  useEffect(() => {
+      socket.on("room-list", (data) => {
+        setDataFromServer(data);
+      });
+    
+    
     // Clean up the event listener when the component unmounts
     return () => {
       socket.off("room-list");
     };
-  });
+  }, []);
 
-  useEffect(() => {
-    console.log(dataFromServer);
-  }, [dataFromServer]);
 
   return (
     <>
@@ -33,7 +29,7 @@ export default function Rooms() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-9">
           {dataFromServer &&
             dataFromServer.map((item, index) => (
-              <CardRoom item={item} user={window.localStorage.getItem("user")} />
+              <CardRoom item={item} user={window.localStorage.getItem("user")} key={index}/>
             ))}
         </div>
       </div>

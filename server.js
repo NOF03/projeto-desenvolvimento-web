@@ -194,12 +194,17 @@ io.on("connection", async (socket) => {
       const idRoom = new mongoose.Types.ObjectId(roomID);
       const existingRoom = await Room.findOne({ _id: idRoom });
 
+      const user = await userModel.findOne({_id: userID});
+      user.gamesPlayed++;
+      await user.save();
+
       if (existingRoom) {
         existingRoom.users = existingRoom.users.filter(
           (user) => user.id !== userID
         );
         if (existingRoom.users.length === 0) {
           await Room.deleteOne({ _id: idRoom });
+          return;
         }
 
         if (existingRoom && existingRoom.host === userID) {
@@ -224,29 +229,6 @@ io.on("connection", async (socket) => {
   socket.on("disconnect", async () => {
     console.log(`User ${socket.id} disconnected`);
 
-    try {
-      const userId = userSockets[socket.id];
-      console.log(userSockets);
-      const rooms = await Room.find({ users: userId });
-      for (const room of rooms) {
-        room.users = room.users.filter((newUser) => newUser !== user);
-
-        if (room.host === userId) {
-          room.host = room.users[0] || null;
-        }
-
-        await room.save();
-
-        socket.leave(room.id);
-        console.log(`User ${user.name} left room ${room.roomName}`);
-        io.to(room.id).emit("user left", user.name);
-
-        if (room.users.length === 0) {
-          await Room.deleteOne({ roomName: room.id });
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    
   });
 });
